@@ -17,7 +17,7 @@ CFLAGS = -std=c++11 -g -Wall -fPIC
 LIBRARYS = -pthread -Wl,-rpath=/usr/local/lib/ -lboost_system -lboost_thread
 
 #target program name
-TARGET = timer5
+TARGET = client
 
 
 %.o:%.cpp
