@@ -20,6 +20,8 @@ class tcp_socket{
             return socket_;
         }
 
+
+
     private:
         tcp_socket(boost::asio::io_service& io_service): socket_(io_service){
         }
@@ -28,16 +30,11 @@ class tcp_socket{
 };
 
 
-void do_accept_(const boost::system::error_code&){
-    std::cout << "Oh" << std::endl;
-}
 
 class tcp_server{
     public:
         tcp_server(int port,boost::asio::io_service& io_service):acceptor_(io_service,tcp::endpoint(tcp::v4(),port)){
             do_accept();
-            //auto newconnection = tcp_socket::create(acceptor_.get_io_service());
-            //acceptor_.async_accept(newconnection->get_sock(),&tcp_server::handle_accept,this);
         }
         void do_accept(){
             auto newconnection = tcp_socket::create(acceptor_.get_io_service());
