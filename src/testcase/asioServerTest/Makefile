@@ -14,7 +14,7 @@ CFLAGS = -std=c++11 -g -Wall -fPIC
 
 
 #libs
-LIBRARYS = -lpthread -Wl,-rpath=/usr/local/lib/  -lboost_log  -lboost_thread -lboost_system -lboost_log_setup
+LIBRARYS = -lpthread -Wl,-rpath=/usr/local/lib/  -lglog  -lboost_thread -lboost_system 
 
 #target program name
 TARGET = server

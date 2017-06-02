@@ -7,7 +7,8 @@
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/asio.hpp>
 #include  <utility>
-
+#include "msg_head.hpp"
+#include "glog.hpp"
 using boost::asio::ip::tcp;
 
 class tcp_socket{
@@ -19,14 +20,21 @@ class tcp_socket{
         tcp::socket& get_sock(){
             return socket_;
         }
+        //invoke handler when n bytes are read
+        void do_read_nbytes(size_t n){
+            boost::asio::async_read(socket_,boost::asio::buffer(msg_buffer_,n),boost::bind(&tcp_socket::handle_read,this));
+        }
 
+        void handle_read(){
 
+        }
 
     private:
         tcp_socket(boost::asio::io_service& io_service): socket_(io_service){
         }
         tcp::socket socket_;
 
+        std::array<char,MAX_MSG_LEN> msg_buffer_;
 };
 
 
@@ -38,11 +46,16 @@ class tcp_server{
         }
         void do_accept(){
             auto newconnection = tcp_socket::create(acceptor_.get_io_service());
-            acceptor_.async_accept(newconnection->get_sock(),boost::bind(&tcp_server::handle_accept,this));
+            acceptor_.async_accept(newconnection->get_sock(),boost::bind(&tcp_server::handle_accept,this,newconnection));
+
         }
 
-        void handle_accept(){
-            std::cout << "welcome" << std::endl;
+        void handle_accept(tcp_socket::tcp_socket_ptr conn_ptr){
+            auto remote_ep = (conn_ptr->get_sock()).remote_endpoint();
+            auto remote_ad = remote_ep.address();
+			std::string str_addr = remote_ad.to_string();
+			LOG(INFO) << str_addr  <<" is accepted ";
+
             do_accept();
         }
 
