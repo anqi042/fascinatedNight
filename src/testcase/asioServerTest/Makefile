@@ -8,7 +8,7 @@ INCLUDE =
 OBJECTS = main.o mySocket.o
 
 # Complier Options
-CFLAGS = -std=c++11 -g -Wall -fPIC
+CFLAGS = -std=c++11 -g -DDEBUG -Wall -fPIC
 
 
 
