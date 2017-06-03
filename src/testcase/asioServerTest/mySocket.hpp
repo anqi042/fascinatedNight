@@ -22,13 +22,18 @@ class tcp_socket{
         }
         //invoke handler when n bytes are read
         void do_read_nbytes(size_t n){
-            boost::asio::async_read(socket_,boost::asio::buffer(msg_buffer_,n),boost::bind(&tcp_socket::handle_read,this));
+            boost::asio::async_read(socket_,boost::asio::buffer(msg_buffer_,n),boost::bind(&tcp_socket::handle_read,this,
+                        boost::asio::placeholders::error,boost::asio::placeholders::bytes_transferred));
         }
 
-        void handle_read(){
+        void handle_read(const boost::system::error_code& ec,
+                    std::size_t bytes_transferred);
 
+
+
+        void start(){
+            do_read_nbytes(5);
         }
-
     private:
         tcp_socket(boost::asio::io_service& io_service): socket_(io_service){
         }
@@ -55,7 +60,7 @@ class tcp_server{
             auto remote_ad = remote_ep.address();
 			std::string str_addr = remote_ad.to_string();
 			LOG(INFO) << str_addr  <<" is accepted ";
-
+            conn_ptr->start();
             do_accept();
         }
 
