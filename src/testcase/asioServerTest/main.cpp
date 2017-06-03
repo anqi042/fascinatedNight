@@ -4,8 +4,10 @@
 using boost::asio::ip::tcp;
 
 void init(char* argv[]){
+    char * dirname= "logdir";
+    mklogdir(dirname);
      FLAGS_logbufsecs = 0;
-     FLAGS_log_dir = "./debug_log";
+     FLAGS_log_dir = dirname;
     google::InitGoogleLogging(argv[0]);
      LOG(INFO) << "Hello World";
 }

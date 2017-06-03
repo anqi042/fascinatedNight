@@ -5,7 +5,7 @@ CC = g++
 INCLUDE = 
 
 #OBJECTS  .o file
-OBJECTS = main.o
+OBJECTS = main.o glog.o
 
 # Complier Options
 CFLAGS = -std=c++11 -g -Wall -fPIC
