@@ -5,10 +5,10 @@ CC = g++
 INCLUDE = 
 
 #OBJECTS  .o file
-OBJECTS = main.o glog.o
+OBJECTS = main.o mySocket.o glog.o
 
 # Complier Options
-CFLAGS = -std=c++11 -g -Wall -fPIC
+CFLAGS = -std=c++11 -g -DDEBUG -Wall -fPIC
 
 
 
