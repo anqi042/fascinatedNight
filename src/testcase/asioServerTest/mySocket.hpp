@@ -55,29 +55,9 @@ class tcp_server{
                         boost::asio::placeholders::error));
 
         }
-/*
-        void handle_accept(tcp_socket::tcp_socket_ptr conn_ptr){
-            auto remote_ep = (conn_ptr->get_sock()).remote_endpoint();
-            auto remote_ad = remote_ep.address();
-			std::string str_addr = remote_ad.to_string();
-			LOG(INFO) << str_addr  <<" is accepted ";
-            conn_ptr->start();
-            do_accept();
-        }
-*/
+
     private:
-        void handle_accept(const boost::system::error_code& ec){
-
-            auto newconnection = tcp_socket::create(std::move(listen_sock_));
-            connections_.push_back(newconnection);
-            auto remote_ep =newconnection->get_sock().remote_endpoint();
-            auto remote_ad = remote_ep.address();
-			std::string str_addr = remote_ad.to_string();
-			LOG(INFO) << str_addr  <<" is accepted ";
-            newconnection->start();
-            do_accept();
-
-        }
+        void handle_accept(const boost::system::error_code& ec);
 
         tcp::acceptor acceptor_;
         tcp::socket listen_sock_;
