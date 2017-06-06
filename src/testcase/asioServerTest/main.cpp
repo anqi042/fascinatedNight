@@ -1,4 +1,4 @@
-
+#include "sockController.hpp"
 #include "mySocket.hpp"
 #include "glog.hpp"
 using boost::asio::ip::tcp;
@@ -18,7 +18,7 @@ int main(int argc,char* argv[]){
     init(argv);
     try{
     boost::asio::io_service  io_service;
-    tcp_server  server(666,io_service);
+    Server server(666,io_service);
     io_service.run();
     }
     catch(std::exception& e){

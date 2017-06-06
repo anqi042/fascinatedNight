@@ -2,12 +2,9 @@
 
 void tcp_socket::handle_read(const boost::system::error_code& ec,
         std::size_t bytes_transferred){
-    if(!ec){
-        std::string msg(std::begin(msg_buffer_),std::begin(msg_buffer_)+bytes_transferred);
-        std::cout << bytes_transferred << " " << msg << std::endl;
 
-        do_read_nbytes(5);
-        do_write_nbytes(msg_buffer_,5);
+    if(!ec){
+        readCallBackObj_(msg_buffer_,bytes_transferred);
     }else {
         //if error is operation cancelled,socket has been closed ;
         //this occurs when using netcat or unfriendly client
@@ -22,7 +19,7 @@ void tcp_socket::handle_read(const boost::system::error_code& ec,
 
 
 void tcp_server::handle_accept(const boost::system::error_code& ec){
-
+/*
     auto newconnection = tcp_socket::create(std::move(listen_sock_));
     connections_.push_back(newconnection);
     auto remote_ep =newconnection->get_sock().remote_endpoint();
@@ -31,8 +28,10 @@ void tcp_server::handle_accept(const boost::system::error_code& ec){
     LOG(INFO) << str_addr  <<" is accepted ";
     newconnection->start();
     do_accept();
+*/
+    accCallBackObj_(std::move(listen_sock_));
 }
 
 void tcp_socket::handle_write( const boost::system::error_code& ec,std::size_t bytes_transferred){
-
+    writeCallBackObj_();
 }
