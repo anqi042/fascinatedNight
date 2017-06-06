@@ -31,6 +31,14 @@ class tcp_socket{
                     std::size_t bytes_transferred);
 
 
+        void do_write_nbytes(std::array<char,MAX_MSG_LEN> writebuffer,size_t n){
+            boost::asio::async_write(socket_, boost::asio::buffer(writebuffer, n),
+            boost::bind(&tcp_socket::handle_write,
+            this, boost::asio::placeholders::error,
+            boost::asio::placeholders::bytes_transferred) );
+        }
+
+        void handle_write( const boost::system::error_code& ec,std::size_t bytes_transferred);
 
         void start(){
             do_read_nbytes(5);

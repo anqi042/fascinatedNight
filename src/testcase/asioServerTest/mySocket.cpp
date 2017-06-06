@@ -7,6 +7,7 @@ void tcp_socket::handle_read(const boost::system::error_code& ec,
         std::cout << bytes_transferred << " " << msg << std::endl;
 
         do_read_nbytes(5);
+        do_write_nbytes(msg_buffer_,5);
     }else {
         //if error is operation cancelled,socket has been closed ;
         //this occurs when using netcat or unfriendly client
@@ -30,4 +31,8 @@ void tcp_server::handle_accept(const boost::system::error_code& ec){
     LOG(INFO) << str_addr  <<" is accepted ";
     newconnection->start();
     do_accept();
+}
+
+void tcp_socket::handle_write( const boost::system::error_code& ec,std::size_t bytes_transferred){
+
 }
