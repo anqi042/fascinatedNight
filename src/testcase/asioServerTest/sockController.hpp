@@ -24,7 +24,7 @@ class Connection{
             tcp_socket_->do_read_nbytes(5);
         }
     private:
-        void readCallBack(std::array<char,MAX_MSG_LEN>,size_t n);
+        void readCallBack(char*,size_t n);
         void writeCallBack();
         tcp_socket::tcp_socket_ptr tcp_socket_;
 };

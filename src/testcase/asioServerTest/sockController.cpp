@@ -1,5 +1,5 @@
 #include "sockController.hpp"
-void Connection::readCallBack(std::array<char,MAX_MSG_LEN> msg_buffer,size_t n){
+void Connection::readCallBack(char* msg_buffer,size_t n){
     LOG(INFO) << "read call back";
     tcp_socket_->do_read_nbytes(5);
     tcp_socket_->do_write_nbytes(msg_buffer ,n);

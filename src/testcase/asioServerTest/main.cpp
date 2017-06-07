@@ -1,5 +1,4 @@
 #include "sockController.hpp"
-#include "mySocket.hpp"
 #include "glog.hpp"
 using boost::asio::ip::tcp;
 

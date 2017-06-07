@@ -17,7 +17,7 @@ using boost::asio::ip::tcp;
 
 class tcp_socket{
     public:
-        typedef std::function<void(std::array<char,MAX_MSG_LEN>,size_t)> ReadCBObj;
+        typedef std::function<void(char*,size_t)> ReadCBObj;
         typedef std::function<void()> WriteCBObj;
         typedef boost::shared_ptr<tcp_socket> tcp_socket_ptr;
 
@@ -37,7 +37,7 @@ class tcp_socket{
                     std::size_t bytes_transferred);
 
 
-        void do_write_nbytes(std::array<char,MAX_MSG_LEN> writebuffer,size_t n){
+        void do_write_nbytes(char* writebuffer,size_t n){
             boost::asio::async_write(socket_, boost::asio::buffer(writebuffer, n),
             boost::bind(&tcp_socket::handle_write,
             this, boost::asio::placeholders::error,
@@ -57,8 +57,7 @@ class tcp_socket{
 
         tcp::socket socket_;
 
-        std::array<char,MAX_MSG_LEN> msg_buffer_;
-
+        char msg_buffer_[BigDickMsg::TOTALMSGLEN];
         ReadCBObj  readCallBackObj_;
         WriteCBObj writeCallBackObj_;
 };
