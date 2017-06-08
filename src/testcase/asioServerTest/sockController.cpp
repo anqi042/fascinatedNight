@@ -5,7 +5,7 @@ void Connection::readCallBack(char* msg_buffer,size_t n){
         if (n != BigDickMsg::HEADLEN){
             //fucked!
         }else{
-            res = dick_.decode_head(msg_buffer);
+            res = dick_for_read.decode_head(msg_buffer);
             if (res == -1){
                 //fucked!close connection
                 //erase it from connList_,check if alive
@@ -27,6 +27,10 @@ void Connection::readCallBack(char* msg_buffer,size_t n){
     }else{
         //receive message body
         isHead = true;
+        std::memcpy(dick_for_read.data,msg_buffer,n);
+        //enqueue a copy
+        //clear
+        std::memset(dick_for_read.data,0,BigDickMsg::TOTALLEN);
         tcp_socket_->do_read_nbytes(BigDickMsg::HEADLEN);
     }
     //tcp_socket_->do_write_nbytes(msg_buffer ,n);

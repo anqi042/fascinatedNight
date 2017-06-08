@@ -20,11 +20,10 @@ class BigDickMsg{
         U32LEN = sizeof(unsigned int)
 
     };
-/*-----------head components----------
     uint16_t msg_type_; //2 bytes
     uint16_t msg_body_len_; //2 bytes
     unsigned int msg_peer_id_; //4 bytes
-*/
+
     bool encode(int type,char* buff,uint16_t strlen,unsigned int peer_id){
         if (strlen >= MSGLEN)
             return false;
@@ -56,10 +55,10 @@ class BigDickMsg{
         std::memcpy((char*)&act,headbuff,U16LEN);
         std::memcpy((char*)&peer_id,headbuff+U16LEN,U32LEN);
         std::memcpy((char*)&len,headbuff+U16LEN+U32LEN,U16LEN);
-        act = ntohs(act);
-        len = ntohs(len);
-        peer_id = ntohl(peer_id);
-        switch (act){
+        msg_type_ = ntohs(act);
+        msg_body_len_ = ntohs(len);
+        msg_peer_id_ = ntohl(peer_id);
+        switch (msg_type_){
             case MSG_TYPE:
                 return len;
                 break;

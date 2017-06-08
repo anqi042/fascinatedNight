@@ -11,7 +11,7 @@ using boost::asio::ip::tcp;
 class Connection{
     public:
         Connection(tcp::socket sock):isHead(true),
-        tcp_socket_(tcp_socket::create(std::move(sock),
+            tcp_socket_(tcp_socket::create(std::move(sock),
             std::bind(&Connection::readCallBack,this,std::placeholders::_1,std::placeholders::_2),
             std::bind(&Connection::writeCallBack,this))){
 
@@ -27,7 +27,8 @@ class Connection{
     private:
         void readCallBack(char*,size_t n);
         void writeCallBack();
-        BigDickMsg dick_;
+        BigDickMsg dick_for_read;
+        BigDickMsg dick_for_write;
         tcp_socket::tcp_socket_ptr tcp_socket_;
         volatile int isHead;
 };
