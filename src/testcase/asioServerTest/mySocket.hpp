@@ -46,9 +46,21 @@ class tcp_socket{
 
         void handle_write( const boost::system::error_code& ec,std::size_t bytes_transferred);
 
-        void start(){
-            do_read_nbytes(5);
+        bool isAlive(){
+            return socket_.is_open();
         }
+
+        bool close(){
+            boost::system::error_code ec;
+            socket_.close(ec);
+            if (ec)
+            {
+                  // An error occurred.
+               return false;
+            }
+            return true;
+        }
+
     private:
         tcp_socket(tcp::socket socket,ReadCBObj rObj,WriteCBObj wObj): socket_(std::move(socket)),
         readCallBackObj_(rObj),writeCallBackObj_(wObj)

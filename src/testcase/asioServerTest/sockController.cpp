@@ -11,6 +11,13 @@ void Connection::readCallBack(char* msg_buffer,size_t n){
                 //erase it from connList_,check if alive
                 //close it
                 LOG(INFO) << "Wrong Header ";
+                if(tcp_socket_->isAlive()){
+                    if(tcp_socket_->close()){
+                        LOG(INFO) << "close this pipe ";
+                    }else{
+                        LOG(ERROR) << "close failed" ;
+                    }
+                }
             }else{
                 isHead = false;
                 tcp_socket_->do_read_nbytes(res);
