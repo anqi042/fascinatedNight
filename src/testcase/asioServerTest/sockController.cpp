@@ -1,8 +1,28 @@
 #include "sockController.hpp"
 void Connection::readCallBack(char* msg_buffer,size_t n){
-    LOG(INFO) << "read call back";
-    tcp_socket_->do_read_nbytes(5);
-    tcp_socket_->do_write_nbytes(msg_buffer ,n);
+    int res = -1;
+    if(isHead){
+        if (n != BigDickMsg::HEADLEN){
+            //fucked!
+        }else{
+            res = dick_.decode_head(msg_buffer);
+            if (res == -1){
+                //fucked!close connection
+                //erase it from connList_,check if alive
+                //close it
+                LOG(INFO) << "Wrong Header ";
+            }else{
+                isHead = false;
+                tcp_socket_->do_read_nbytes(res);
+
+            }
+        }
+    }else{
+        //receive message body
+        isHead = true;
+        tcp_socket_->do_read_nbytes(BigDickMsg::HEADLEN);
+    }
+    //tcp_socket_->do_write_nbytes(msg_buffer ,n);
 }
 
 

@@ -1,5 +1,6 @@
 #ifndef CTRL_HEADER_FILE_H
 #define CTRL_HEADER_FILE_H
+#include <list>
 #include <array>
 #include "msgStruct.hpp"
 #include "mySocket.hpp"
@@ -9,7 +10,8 @@ using std::placeholders::_1;
 using boost::asio::ip::tcp;
 class Connection{
     public:
-        Connection(tcp::socket sock):tcp_socket_(tcp_socket::create(std::move(sock),
+        Connection(tcp::socket sock):isHead(true),
+        tcp_socket_(tcp_socket::create(std::move(sock),
             std::bind(&Connection::readCallBack,this,std::placeholders::_1,std::placeholders::_2),
             std::bind(&Connection::writeCallBack,this))){
 
@@ -20,13 +22,14 @@ class Connection{
         }
         void start(){
             LOG(INFO) << "Connection start..";
-            //read ...
-            tcp_socket_->do_read_nbytes(5);
+            tcp_socket_->do_read_nbytes(BigDickMsg::HEADLEN);
         }
     private:
         void readCallBack(char*,size_t n);
         void writeCallBack();
+        BigDickMsg dick_;
         tcp_socket::tcp_socket_ptr tcp_socket_;
+        volatile int isHead;
 };
 
 
@@ -35,6 +38,7 @@ class Server{
     public:
         typedef boost::shared_ptr<Connection> ConnPtrType ;
         Server(int port,boost::asio::io_service& io_service):
+            connList_(10),
             tcp_server_(port,io_service,std::bind(&Server::acceptCallBack,this,std::placeholders::_1)){
             LOG(INFO) << "Server init";
             tcp_server_.do_accept();
@@ -43,7 +47,7 @@ class Server{
     private:
         void acceptCallBack(tcp::socket sock);
         tcp_server tcp_server_;
-        std::vector<ConnPtrType> connList_;
+        std::list<ConnPtrType> connList_;
 
 };
 

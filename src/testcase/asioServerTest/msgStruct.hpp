@@ -69,7 +69,7 @@ class BigDickMsg{
 
     char data[TOTALLEN];
 
-    BigDickMsg(){
+    BigDickMsg():data("\0"){
 
     }
     ~BigDickMsg(){
