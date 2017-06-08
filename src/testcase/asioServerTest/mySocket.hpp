@@ -10,9 +10,9 @@
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/asio.hpp>
 #include  <utility>
-#include "msg_head.hpp"
 #include "glog.hpp"
 #include <vector>
+#include "msgStruct.hpp"
 using boost::asio::ip::tcp;
 
 class tcp_socket{
@@ -57,7 +57,7 @@ class tcp_socket{
 
         tcp::socket socket_;
 
-        char msg_buffer_[BigDickMsg::TOTALMSGLEN];
+        char msg_buffer_[BigDickMsg::TOTALLEN];
         ReadCBObj  readCallBackObj_;
         WriteCBObj writeCallBackObj_;
 };

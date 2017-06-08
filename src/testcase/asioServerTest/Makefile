@@ -5,7 +5,7 @@ CC = clang++
 INCLUDE = 
 
 #OBJECTS  .o file
-OBJECTS = main.o mySocket.o glog.o sockController.o 
+OBJECTS = main.o mySocket.o glog.o sockController.o
 
 # Complier Options
 CFLAGS = -std=c++11 -g -DDEBUG -Wall -fPIC

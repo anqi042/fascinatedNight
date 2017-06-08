@@ -1,9 +1,12 @@
+#ifndef MSG_HEADER_FILE_H
+#define MSG_HEADER_FILE_H
 #include <cstring>
 #include <cstdint>
 #include <iostream>
 #include <utility>
 #include <arpa/inet.h>
-struct BigDickMsg{
+class BigDickMsg{
+    public:
     enum {
         HEADLEN=8,
         MSGLEN=512,
@@ -72,9 +75,8 @@ struct BigDickMsg{
     ~BigDickMsg(){
     }
 };
-
-
-int main(){
+/*
+int _test_123123123(){
     BigDickMsg msg;
     //std::cout << sizeof(msg) << std::endl;
     char buffer[]="hello world";
@@ -86,3 +88,5 @@ std::cout << i << std::endl;
     std::cout << l << std::endl;
     return 0;
 }
+*/
+#endif

@@ -1,7 +1,7 @@
 #ifndef CTRL_HEADER_FILE_H
 #define CTRL_HEADER_FILE_H
 #include <array>
-#include "msg_head.hpp"
+#include "msgStruct.hpp"
 #include "mySocket.hpp"
 #include <utility>
 #include <functional>
