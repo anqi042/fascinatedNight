@@ -47,7 +47,12 @@ class tcp_socket{
         void handle_write( const boost::system::error_code& ec,std::size_t bytes_transferred);
 
         bool isAlive(){
-            return socket_.is_open();
+            if(socket_.is_open())
+            {
+                return true;
+            }else{
+                return false;
+            }
         }
 
         bool close(){

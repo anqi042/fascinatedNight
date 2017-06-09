@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <chrono>
 #include <thread>
+#include "sockController.hpp"
 Brain::Brain(ServerPtrType):connList_(){
      std::thread(&Brain::monitor_sockets, this).detach();
 }
@@ -36,8 +37,15 @@ void Brain::detach_connec(ConnPtrType cPtr){
 
 void Brain::monitor_sockets(){
     while(1){
-    LOG(INFO) << "alive" ;
-    std::this_thread::sleep_for (std::chrono::seconds(1));
+
+        LOG(INFO) << "current connections " << connList_.size() ;
+        for(auto itr = connList_.begin();itr != connList_.end();++itr){
+            if(!(*itr)->isAlive()){
+                itr = connList_.erase(itr);
+            }
+        }
+
+        std::this_thread::sleep_for (std::chrono::seconds(5));
     }
 }
 

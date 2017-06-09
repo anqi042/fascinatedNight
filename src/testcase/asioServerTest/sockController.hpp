@@ -25,6 +25,10 @@ class Connection{
             LOG(INFO) << "Connection start..";
             tcp_socket_->do_read_nbytes(BigDickMsg::HEADLEN);
         }
+
+        inline bool isAlive(){
+            return tcp_socket_->isAlive();
+        }
     private:
         void readCallBack(char*,size_t n);
         void writeCallBack();
@@ -40,7 +44,6 @@ class Server{
     public:
         typedef std::shared_ptr<Connection> ConnPtrType ;
         Server(int port,boost::asio::io_service& io_service):
-            connList_(10),
             tcp_server_(port,io_service,std::bind(&Server::acceptCallBack,this,std::placeholders::_1)){
             LOG(INFO) << "Server init";
             tcp_server_.do_accept();
@@ -49,7 +52,6 @@ class Server{
     private:
         void acceptCallBack(tcp::socket sock);
         tcp_server tcp_server_;
-        std::list<ConnPtrType> connList_;
 
 };
 

@@ -11,8 +11,8 @@ void tcp_socket::handle_read(const boost::system::error_code& ec,
         //this occurs when using netcat or unfriendly client
         std::cout << ec.value() << " " << ec.message() <<std::endl;
         if (ec.value() == 2){// end of file
-            LOG(INFO) << "peer endpoint disconnected; close socket";
-           //socket_.close();
+            socket_.close();
+            LOG(INFO) << socket_.is_open();
         }
 
     }
