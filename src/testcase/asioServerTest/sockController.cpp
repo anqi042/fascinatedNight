@@ -1,4 +1,5 @@
 #include "sockController.hpp"
+#include "brain.hpp"
 void Connection::readCallBack(char* msg_buffer,size_t n){
     int res = -1;
     if(isHead){
@@ -45,8 +46,9 @@ void Connection::writeCallBack(){
 
 void Server::acceptCallBack(tcp::socket sock){
     LOG(INFO) << "accept call back";
-    boost::shared_ptr<Connection> connPtr(new Connection(std::move(sock)));
-    connList_.push_back(connPtr);
+    std::shared_ptr<Connection> connPtr(new Connection(std::move(sock)));
+    //connList_.push_back(connPtr);
+    Brain::getInstance()->attach_connec(connPtr);
     connPtr->start();
     tcp_server_.do_accept();
 

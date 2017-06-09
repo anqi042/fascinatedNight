@@ -6,6 +6,7 @@
 #include "mySocket.hpp"
 #include <utility>
 #include <functional>
+#include <memory>
 using std::placeholders::_1;
 using boost::asio::ip::tcp;
 class Connection{
@@ -37,7 +38,7 @@ class Connection{
 
 class Server{
     public:
-        typedef boost::shared_ptr<Connection> ConnPtrType ;
+        typedef std::shared_ptr<Connection> ConnPtrType ;
         Server(int port,boost::asio::io_service& io_service):
             connList_(10),
             tcp_server_(port,io_service,std::bind(&Server::acceptCallBack,this,std::placeholders::_1)){

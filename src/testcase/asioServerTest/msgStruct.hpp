@@ -58,6 +58,7 @@ class BigDickMsg{
         msg_type_ = ntohs(act);
         msg_body_len_ = ntohs(len);
         msg_peer_id_ = ntohl(peer_id);
+        std::cout << msg_type_ << " " << msg_body_len_ << " " << msg_peer_id_<< std::endl;
         switch (msg_type_){
             case MSG_TYPE:
                 return len;

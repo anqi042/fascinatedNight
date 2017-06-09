@@ -1,4 +1,5 @@
 #include "mySocket.hpp"
+#include "brain.hpp"
 
 void tcp_socket::handle_read(const boost::system::error_code& ec,
         std::size_t bytes_transferred){
@@ -11,24 +12,15 @@ void tcp_socket::handle_read(const boost::system::error_code& ec,
         std::cout << ec.value() << " " << ec.message() <<std::endl;
         if (ec.value() == 2){// end of file
             LOG(INFO) << "peer endpoint disconnected; close socket";
-           socket_.close();
+           //socket_.close();
         }
+
     }
 
 }
 
 
 void tcp_server::handle_accept(const boost::system::error_code& ec){
-/*
-    auto newconnection = tcp_socket::create(std::move(listen_sock_));
-    connections_.push_back(newconnection);
-    auto remote_ep =newconnection->get_sock().remote_endpoint();
-    auto remote_ad = remote_ep.address();
-    std::string str_addr = remote_ad.to_string();
-    LOG(INFO) << str_addr  <<" is accepted ";
-    newconnection->start();
-    do_accept();
-*/
     accCallBackObj_(std::move(listen_sock_));
 }
 
