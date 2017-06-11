@@ -24,22 +24,36 @@ class BigDickMsg{
     uint16_t msg_body_len_; //2 bytes
     unsigned int msg_peer_id_; //4 bytes
 
+    bool encode_msg_buff_only(char* buff,int strlen){
+        msg_body_len_ = strlen;
+        if (strlen >= MSGLEN)
+            return false;
+        encode_msg_head();
+        std::memcpy(data+HEADLEN,buff,strlen);
+        return true;
+    }
+
+
     bool encode(int type,char* buff,uint16_t strlen,unsigned int peer_id){
+        msg_type_ = type;
+        msg_body_len_=strlen;
+        msg_peer_id_ = peer_id;
         if (strlen >= MSGLEN)
             return false;
         switch (type){
             case MSG_TYPE:
-                encode_msg_head(std::move(peer_id),std::move(strlen));
+                encode_msg_head();
                 std::memcpy(data+HEADLEN,buff,strlen);
                 break;
         }
         return true;
     }
+
     //assgin action and peer id
-    void encode_msg_head(unsigned int && peer_id,uint16_t && strlen){
+    void encode_msg_head(){
         //convert to network end
-        auto tmp_len = htons(strlen);
-        auto tmp_peer = htonl(peer_id);
+        auto tmp_len = htons(msg_body_len_);
+        auto tmp_peer = htonl(msg_peer_id_);
         uint16_t t = htons(MSG_TYPE);
         std::memcpy(data,(char*)&t,U16LEN);
         std::memcpy(data+U16LEN,(char*)&tmp_peer,U32LEN);

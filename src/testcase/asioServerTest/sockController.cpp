@@ -28,7 +28,7 @@ void Connection::readCallBack(char* msg_buffer,size_t n){
     }else{
         //receive message body
         isHead = true;
-        std::memcpy(dick_for_read.data,msg_buffer,n);
+        dick_for_read.encode_msg_buff_only(msg_buffer,n);
         //enqueue a copy
         //clear
         std::memset(dick_for_read.data,0,BigDickMsg::TOTALLEN);

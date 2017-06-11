@@ -1,9 +1,13 @@
 #ifndef BRAIN_HEADER_FILE_H
 #define BRAIN_HEADER_FILE_H
+#include <queue>
 #include <memory>
 #include <list>
+#include <condition_variable>
+#include <mutex>
 class Connection;
 class Server;
+class BigDickMsg;
 class Brain{
     public:
 
@@ -18,13 +22,22 @@ class Brain{
 
 
         static BrainPtrType getInstance(ServerPtrType=nullptr);
+        //manage connections
         void attach_connec(ConnPtrType);
         void detach_connec(ConnPtrType);
-
         void monitor_sockets();
+
+
+        //msg queue operation
+        void msg_enqueue(const BigDickMsg& msg);
+        void distribute_svc();
     private:
         std::list<ConnPtrType> connList_;
+        std::queue<BigDickMsg> msg_que_;
 
+        //queue locks
+        std::condition_variable cond;
+        std::mutex mut;
 };
 
 
