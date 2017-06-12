@@ -20,6 +20,7 @@ void Connection::readCallBack(char* msg_buffer,size_t n){
                     }
                 }
             }else{
+                LOG(INFO) << "head is ok, read " << res << " bytes ";
                 isHead = false;
                 tcp_socket_->do_read_nbytes(res);
 
@@ -27,9 +28,11 @@ void Connection::readCallBack(char* msg_buffer,size_t n){
         }
     }else{
         //receive message body
+        LOG(INFO) << "message received";
         isHead = true;
         dick_for_read.encode_msg_buff_only(msg_buffer,n);
         //enqueue a copy
+        Brain::getInstance()->msg_enqueue(dick_for_read);
         //clear
         std::memset(dick_for_read.data,0,BigDickMsg::TOTALLEN);
         tcp_socket_->do_read_nbytes(BigDickMsg::HEADLEN);

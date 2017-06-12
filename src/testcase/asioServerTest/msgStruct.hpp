@@ -24,6 +24,10 @@ class BigDickMsg{
     uint16_t msg_body_len_; //2 bytes
     unsigned int msg_peer_id_; //4 bytes
 
+    std::string data_body(){
+        return std::string(data+HEADLEN,data+HEADLEN+msg_body_len_+1);
+    }
+
     bool encode_msg_buff_only(char* buff,int strlen){
         msg_body_len_ = strlen;
         if (strlen >= MSGLEN)
@@ -75,7 +79,7 @@ class BigDickMsg{
         std::cout << msg_type_ << " " << msg_body_len_ << " " << msg_peer_id_<< std::endl;
         switch (msg_type_){
             case MSG_TYPE:
-                return len;
+                return msg_body_len_;
                 break;
         }
         return -1;

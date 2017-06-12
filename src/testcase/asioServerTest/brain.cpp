@@ -7,6 +7,7 @@
 #include "sockController.hpp"
 Brain::Brain(ServerPtrType):connList_(),msg_que_(){
      std::thread(&Brain::monitor_sockets, this).detach();
+     std::thread(&Brain::distribute_svc,this).detach();
 }
 
 Brain::BrainPtrType Brain::getInstance(Brain::ServerPtrType sPtr){
@@ -60,10 +61,14 @@ void Brain::distribute_svc(){
     while(1){
         std::unique_lock<std::mutex> lock(mut);
         while(!(msg_que_.size()  > 0)){
+            LOG(INFO) << "wait for msg";
             cond.wait(lock);
         }
         while(msg_que_.size() > 0){
             //transfer
+            auto tmp = msg_que_.front();
+            LOG(INFO) << "MsgTo user: "<<tmp.msg_peer_id_
+                << " " << tmp.data_body();
             msg_que_.pop();
         }
 
