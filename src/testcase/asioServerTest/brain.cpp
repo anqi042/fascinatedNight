@@ -81,6 +81,16 @@ void Brain::distribute_svc(){
             auto tmp = msg_que_.front();
             LOG(INFO) << "MsgTo user: "<<tmp.msg_peer_id_
                 << " " << tmp.data_body();
+            auto itr = user2connec.find(tmp.msg_peer_id_);
+            if(itr == user2connec.end()){
+
+                LOG(INFO) << "fucked; he is offline";
+            }else{
+                LOG(INFO) << "send to socket " << tmp.msg_body_len_;
+                auto conn = itr->second;
+                conn->write_to_myself(tmp.data+BigDickMsg::HEADLEN,
+                        tmp.msg_body_len_);
+            }
             msg_que_.pop();
         }
 

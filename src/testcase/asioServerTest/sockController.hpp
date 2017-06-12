@@ -29,6 +29,12 @@ class Connection:public std::enable_shared_from_this<Connection>{
         inline bool isAlive(){
             return tcp_socket_->isAlive();
         }
+
+        void write_to_myself(char *buff,size_t n){
+            tcp_socket_->do_write_nbytes(buff,n);
+        }
+
+
     private:
         void readCallBack(char*,size_t n);
         void writeCallBack();
