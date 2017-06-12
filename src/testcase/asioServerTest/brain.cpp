@@ -41,8 +41,15 @@ void Brain::monitor_sockets(){
     while(1){
 
         LOG(INFO) << "current connections " << connList_.size() ;
+        LOG(INFO) << "current  online users " << user2connec.size() ;
         for(auto itr = connList_.begin();itr != connList_.end();++itr){
             if(!(*itr)->isAlive()){
+                for(auto itr2 = user2connec.begin();itr2 != user2connec.end();++itr2){
+                    if(*itr == itr2->second){
+                        itr2 = user2connec.erase(itr2);
+                        break;
+                    }
+                }
                 itr = connList_.erase(itr);
             }
         }
@@ -50,6 +57,11 @@ void Brain::monitor_sockets(){
         std::this_thread::sleep_for (std::chrono::seconds(5));
     }
 }
+
+void Brain::set_user2connec(int id,ConnPtrType cPtr){
+    user2connec.emplace(id,cPtr);
+}
+
 
 void Brain::msg_enqueue(const BigDickMsg& msg){
     std::lock_guard<std::mutex> lock(mut);

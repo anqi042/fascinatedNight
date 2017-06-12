@@ -79,10 +79,19 @@ class BigDickMsg{
         std::cout << msg_type_ << " " << msg_body_len_ << " " << msg_peer_id_<< std::endl;
         switch (msg_type_){
             case MSG_TYPE:
-                return msg_body_len_;
+                return MSG_TYPE;
+                break;
+            case LOGIN_TYPE:
+                return LOGIN_TYPE;
                 break;
         }
         return -1;
+    }
+
+    unsigned int get_my_id(){
+        unsigned int myId = 0;
+        std::memcpy(&myId,data+HEADLEN,sizeof(unsigned int));
+        return myId;
     }
 
     char data[TOTALLEN];

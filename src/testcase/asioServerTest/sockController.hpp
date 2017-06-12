@@ -9,7 +9,7 @@
 #include <memory>
 using std::placeholders::_1;
 using boost::asio::ip::tcp;
-class Connection{
+class Connection:public std::enable_shared_from_this<Connection>{
     public:
         Connection(tcp::socket sock):isHead(true),
             tcp_socket_(tcp_socket::create(std::move(sock),
@@ -32,6 +32,7 @@ class Connection{
     private:
         void readCallBack(char*,size_t n);
         void writeCallBack();
+        void processLogin();
         BigDickMsg dick_for_read;
         BigDickMsg dick_for_write;
         tcp_socket::tcp_socket_ptr tcp_socket_;

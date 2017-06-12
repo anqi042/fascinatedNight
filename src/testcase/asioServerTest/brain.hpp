@@ -5,6 +5,7 @@
 #include <list>
 #include <condition_variable>
 #include <mutex>
+#include <unordered_map>
 class Connection;
 class Server;
 class BigDickMsg;
@@ -26,7 +27,7 @@ class Brain{
         void attach_connec(ConnPtrType);
         void detach_connec(ConnPtrType);
         void monitor_sockets();
-
+        void set_user2connec(int id,ConnPtrType cPtr);
 
         //msg queue operation
         void msg_enqueue(const BigDickMsg& msg);
@@ -38,6 +39,8 @@ class Brain{
         //queue locks
         std::condition_variable cond;
         std::mutex mut;
+
+        std::unordered_map<int,ConnPtrType> user2connec;
 };
 
 

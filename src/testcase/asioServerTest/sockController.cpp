@@ -22,22 +22,36 @@ void Connection::readCallBack(char* msg_buffer,size_t n){
             }else{
                 LOG(INFO) << "head is ok, read " << res << " bytes ";
                 isHead = false;
-                tcp_socket_->do_read_nbytes(res);
+                tcp_socket_->do_read_nbytes(dick_for_read.msg_body_len_);
 
             }
         }
     }else{
         //receive message body
-        LOG(INFO) << "message received";
         isHead = true;
         dick_for_read.encode_msg_buff_only(msg_buffer,n);
-        //enqueue a copy
-        Brain::getInstance()->msg_enqueue(dick_for_read);
+        if(dick_for_read.msg_type_==BigDickMsg::LOGIN_TYPE){
+            processLogin();
+
+        }else if(dick_for_read.msg_type_ == BigDickMsg::MSG_TYPE){
+            //enqueue a copy
+            Brain::getInstance()->msg_enqueue(dick_for_read);
+
+        }
         //clear
         std::memset(dick_for_read.data,0,BigDickMsg::TOTALLEN);
         tcp_socket_->do_read_nbytes(BigDickMsg::HEADLEN);
     }
     //tcp_socket_->do_write_nbytes(msg_buffer ,n);
+}
+
+void Connection::processLogin(){
+    if(dick_for_read.msg_type_ == BigDickMsg::LOGIN_TYPE){
+            LOG(INFO) << dick_for_read.get_my_id()<< " Login!";
+        Brain::getInstance()->set_user2connec(
+                dick_for_read.get_my_id(),shared_from_this()
+                );
+    }
 }
 
 
