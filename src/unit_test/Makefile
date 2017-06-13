@@ -7,7 +7,7 @@ UNITTEST_PROJ = $(shell pwd)
 TEST_BASE_DIR=${UNITTEST_PROJ}/cxxtest-4.3
 
 # Change this line if you want a different compiler
-GXX = g++ -Wall -W -Werror -I. -I..
+GXX = g++  -std=c++11 -Wall -W -Werror -I. -I..
 
 TESTGEN = ${TEST_BASE_DIR}/bin/cxxtestgen
 
